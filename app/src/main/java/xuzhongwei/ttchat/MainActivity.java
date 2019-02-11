@@ -1,10 +1,12 @@
 package xuzhongwei.ttchat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
-import xuzhongwei.ttchat.dummy.DummyContent;
+import xuzhongwei.ttchat.dummy.Group;
+import xuzhongwei.ttchat.view.ChatInputView;
 
 public class MainActivity extends AppCompatActivity implements ChatGroupFragment.OnListFragmentInteractionListener{
 
@@ -13,6 +15,7 @@ public class MainActivity extends AppCompatActivity implements ChatGroupFragment
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         loadChatGroup();
+
     }
 
     private void loadChatGroup(){
@@ -27,8 +30,12 @@ public class MainActivity extends AppCompatActivity implements ChatGroupFragment
         transaction.commit();
     }
 
-    @Override
-    public void onListFragmentInteraction(DummyContent.DummyItem item) {
 
+
+    @Override
+    public void onListFragmentInteraction(Group.GroupItem item) {
+        Intent intent = new Intent(getApplicationContext(),ChatActivity.class);
+        startActivity(intent);
     }
+
 }

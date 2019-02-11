@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import xuzhongwei.ttchat.dummy.Chat;
 import xuzhongwei.ttchat.dummy.Group;
 import xuzhongwei.ttchat.dummy.Group.GroupItem;
 
@@ -19,25 +20,26 @@ import xuzhongwei.ttchat.dummy.Group.GroupItem;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class ChatGroupFragment extends Fragment {
+public class ChatContentFragment extends Fragment {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
+    private MyChatContentRecyclerViewAdapter mMyChatContentRecyclerViewAdapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public ChatGroupFragment() {
+    public ChatContentFragment() {
     }
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static ChatGroupFragment newInstance(int columnCount) {
-        ChatGroupFragment fragment = new ChatGroupFragment();
+    public static ChatContentFragment newInstance(int columnCount) {
+        ChatContentFragment fragment = new ChatContentFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
@@ -56,7 +58,7 @@ public class ChatGroupFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_chatgroup_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_chatcontent_list, container, false);
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -67,11 +69,13 @@ public class ChatGroupFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyChatGroupRecyclerViewAdapter(Group.ITEMS, mListener));
-        }
 
+            mMyChatContentRecyclerViewAdapter = new MyChatContentRecyclerViewAdapter(Chat.ITEMS, mListener);
+            recyclerView.setAdapter(mMyChatContentRecyclerViewAdapter);
+        }
         return view;
     }
+
 
 
     @Override
@@ -103,6 +107,15 @@ public class ChatGroupFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(GroupItem item);
+        void onListFragmentInteraction(Chat.ChatItem item);
     }
+
+
+    public void addNewChatContent(String content){
+        Chat.insertNewItem(content);//generate
+        mMyChatContentRecyclerViewAdapter.update(Chat.ITEMS);
+    }
+
+
+
 }
